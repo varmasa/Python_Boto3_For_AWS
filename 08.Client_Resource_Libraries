@@ -1,0 +1,22 @@
+S3: Resource vs Client
+
+Boto3 historically provides two major interfaces:
+
+Client:
+Low-level AWS service API.
+s3 = boto3.client("s3")
+
+Resource:
+Higher-level object-oriented interface for some services.
+s3 = boto3.resource("s3")
+
+Example:
+
+bucket = s3.Bucket("my-bucket")
+for obj in bucket.objects.all():
+    print(obj.key)
+
+Modern Boto3 work often uses clients, particularly when you need precise API control.
+
+A good beginner rule:
+Learn client first. Learn resource afterward.
