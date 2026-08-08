@@ -1,6 +1,37 @@
 What is a Boto3 Waiter?
-
 A waiter automatically keeps checking an AWS resource until it reaches a desired state.
+
+
+Waiters:
+Some AWS operations are asynchronous.
+
+For example:
+Start EC2
+   ↓
+AWS begins starting instance
+   ↓
+Instance may still be "pending"
+   ↓
+Eventually "running"
+
+Boto3 provides waiters.
+
+ec2.start_instances(
+    InstanceIds=["i-0123456789abcdef"]
+)
+
+waiter = ec2.get_waiter("instance_running")
+
+waiter.wait(
+    InstanceIds=["i-0123456789abcdef"]
+)
+
+print("Instance is running")
+
+This is much better than blindly doing:
+
+time.sleep(60)
+
 
 Instead of writing your own:
 while True:
