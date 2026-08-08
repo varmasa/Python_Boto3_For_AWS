@@ -1,0 +1,48 @@
+import boto3
+
+ec2 = boto3.client("ec2", region_name="ap-south-1")
+
+#Describe instances
+response = ec2.describe_instances()
+for reservation in response["Reservations"]:
+    for instance in reservation["Instances"]:
+        print(
+            instance["InstanceId"],
+            instance["State"]["Name"]
+        )
+
+#Filter instances
+response = ec2.describe_instances(
+    Filters=[
+        {
+            "Name": "tag:Env",
+            "Values": ["Dev"]
+        }
+    ]
+)
+
+#Create tags for ec2
+ec2.create_tags(
+    Resources=["i-026e35d4160ee329e"],
+    Tags=[
+        {
+            "Key": "Environment",
+            "Value": "dev"
+        },
+        {
+            "Key": "Owner",
+            "Value": "team-a"
+        }
+    ]
+)
+
+
+
+Then automation can say:
+Find resources tagged Environment=dev
+        ↓
+Stop them
+        ↓
+Save money
+
+This is a very common real-world Boto3 use case.
