@@ -1,0 +1,69 @@
+boto3.client(
+    "s3",
+    aws_access_key_id="AKIA...",
+    aws_secret_access_key="SECRET..."
+)
+
+Don't hard-code credentials.
+Instead, Boto3 uses an AWS credential provider chain.
+
+Conceptually:
+
+Boto3
+  ↓
+Where are my AWS credentials?
+  ↓
+Environment variables?
+  ↓
+AWS credentials/config files?
+  ↓
+IAM role?
+  ↓
+Other supported credential providers
+
+
+For local development, commonly:
+    aws configure
+This creates/configures AWS CLI credentials.
+
+
+Then:
+import boto3
+s3 = boto3.client("s3")
+Boto3 can discover the credentials automatically.
+
+
+IAM is critical for Boto3:
+
+Suppose you execute:
+s3.list_buckets()
+
+Boto3 doesn't magically have permission.
+AWS evaluates your IAM identity/policy.
+
+Conceptually:
+Python
+  ↓
+Boto3
+  ↓
+AWS API
+  ↓
+"I want to list S3 buckets"
+  ↓
+IAM authorization
+  ↓
+Allowed?
+  ├── Yes → response
+  └── No  → AccessDenied
+
+
+For example, an IAM policy might allow:
+{
+  "Effect": "Allow",
+  "Action": [
+    "s3:ListAllMyBuckets"
+  ],
+  "Resource": "*"
+}
+
+Understanding IAM + Boto3 together will take you much further than learning Boto3 syntax alone.
