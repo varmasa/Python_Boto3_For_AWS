@@ -1,0 +1,32 @@
+Install Python
+Install pip & then boto3
+
+pip install boto3
+python -c "import boto3; print(boto3.__version__)"            //boto3 version
+
+Your first Boto3 program
+Start with STS because it's a simple way to understand authentication and AWS API calls.
+
+
+import boto3
+sts = boto3.client("sts")
+response = sts.get_caller_identity()
+print(response)
+
+Response:
+  {
+    'UserId': 'AIDA...',
+    'Account': '123456789012',
+    'Arn': 'arn:aws:iam::123456789012:user/myuser',
+    'ResponseMetadata': {...}
+  }
+
+
+This is a very important Boto3 pattern:
+import boto3
+      ↓
+create client
+      ↓
+call AWS API
+      ↓
+receive Python dictionary
