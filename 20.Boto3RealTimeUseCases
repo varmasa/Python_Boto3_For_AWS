@@ -1,0 +1,46 @@
+Boto3 in real DevOps automation
+
+Here's where Boto3 becomes extremely useful.
+
+1. You might write:
+
+Python script
+    ↓
+Find all EC2 instances
+    ↓
+Filter Environment=dev
+    ↓
+Check current state
+    ↓
+Stop instances
+    ↓
+Wait until stopped
+    ↓
+Create report
+
+
+2. Python
+  ↓
+Find old EBS snapshots
+  ↓
+Check snapshot age
+  ↓
+Delete snapshots older than X days
+
+
+3. Python
+  ↓
+Find unattached EBS volumes
+  ↓
+Generate report
+  ↓
+Notify team
+
+
+4. Python
+  ↓
+Find unattached EBS volumes
+  ↓
+Generate report
+  ↓
+Notify team
