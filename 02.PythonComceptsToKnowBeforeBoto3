@@ -1,0 +1,28 @@
+You don't need to be an advanced Python developer.
+
+You should be comfortable with:
+
+variables
+strings
+lists
+dictionaries
+if/else
+for loops
+functions
+exceptions
+classes/objects
+modules
+JSON
+
+
+Especially understand dictionaries:
+
+server = {
+    "name": "web-server",
+    "environment": "prod",
+    "port": 443
+}
+
+print(server["name"])
+
+Because AWS API requests and responses are heavily dictionary/JSON oriented.
