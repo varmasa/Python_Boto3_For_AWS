@@ -19,3 +19,17 @@ ex:
   dynamodb = boto3.client("dynamodb")
   cloudwatch = boto3.client("cloudwatch")
 
+
+Regions:
+AWS resources generally belong to a region.
+
+
+import boto3
+ec2 = boto3.client(
+    "ec2",
+    region_name="us-east-1"
+)
+s3 = boto3.client(
+    "s3",
+    region_name="ap-south-1"
+)
