@@ -1,0 +1,28 @@
+This is where Boto3 starts becoming easy.
+AWS service documentation exposes APIs.
+
+For example, EC2 has operations conceptually like:
+  DescribeInstances
+  RunInstances
+  StartInstances
+  StopInstances
+  TerminateInstances
+
+
+Boto3 turns them into Python methods:
+
+ec2.describe_instances()
+ec2.start_instances(
+    InstanceIds=["i-0123456789abcdef"]
+)
+ec2.stop_instances(
+    InstanceIds=["i-0123456789abcdef"]
+)
+
+So don't think:
+"I need to memorize Boto3."
+
+Think:
+"What AWS API operation do I need?"
+
+Then find its Boto3 equivalent.
