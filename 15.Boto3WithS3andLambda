@@ -1,0 +1,16 @@
+In s3 bucket add event notifications as Lambda
+
+import boto3
+s3 = boto3.client("s3")
+def lambda_handler(event, context):
+    record = event["Records"][0]
+    bucket = record["s3"]["bucket"]["name"]
+    key = record["s3"]["object"]["key"]
+    print(f"Bucket: {bucket}")
+    print(f"Key: {key}")
+    response = s3.get_object(
+        Bucket=bucket,
+        Key=key
+    )
+    body = response["Body"].read()
+    print(body)
