@@ -1,0 +1,194 @@
+In Boto3, pagination becomes important when an AWS API can return a large number of resources.
+
+For your current EC2 describe_instances() example, let's understand it from beginner → practical level.
+
+
+1.Without Pagination:
+
+import boto3
+ec2 = boto3.client("ec2", region_name="ap-south-1")
+response = ec2.describe_instances()
+
+for reservation in response["Reservations"]:
+    for instance in reservation["Instances"]:
+        print(
+            instance["InstanceId"],
+            instance["State"]["Name"]
+        )
+
+Conceptually:
+
+Python
+  │
+  │ describe_instances()
+  ▼
+AWS EC2
+  │
+  ├── Page 1
+  │    ├── Instance 1
+  │    ├── Instance 2
+  │    └── ...
+  │
+  └── Response returned
+
+
+The important point is that AWS APIs may not return every matching resource in one response.
+If there are many instances, AWS can return a partial result and provide pagination information such as NextToken.
+
+So this code:
+response = ec2.describe_instances()
+
+does not necessarily mean "give me absolutely everything in one response."
+
+
+
+2. Manual pagination:
+
+Some AWS APIs return a NextToken.
+You can manually handle it.
+
+import boto3
+
+ec2 = boto3.client("ec2", region_name="ap-south-1")
+
+next_token = None
+
+while True:
+
+    if next_token:
+        response = ec2.describe_instances(
+            NextToken=next_token
+        )
+    else:
+        response = ec2.describe_instances()
+
+    for reservation in response["Reservations"]:
+        for instance in reservation["Instances"]:
+            print(
+                instance["InstanceId"],
+                instance["State"]["Name"]
+            )
+
+    next_token = response.get("NextToken")
+
+    if not next_token:
+        break
+
+
+Flow:
+              describe_instances()
+                       │
+                       ▼
+                    Page 1
+                       │
+                 NextToken?
+                  /       \
+                Yes        No
+                │           │
+                ▼           ▼
+             Page 2        DONE
+                │
+          NextToken?
+             /    \
+           Yes     No
+           │        │
+           ▼        ▼
+        Page 3     DONE
+
+
+3. Using Boto3 paginator ⭐
+
+Boto3 provides paginators specifically for this.
+
+import boto3
+ec2 = boto3.client("ec2", region_name="ap-south-1")
+paginator = ec2.get_paginator("describe_instances")
+for page in paginator.paginate():
+    for reservation in page["Reservations"]:
+        for instance in reservation["Instances"]:
+            print(
+                instance["InstanceId"],
+                instance["State"]["Name"]
+            )
+
+
+This is generally the preferred approach.
+Boto3 handles the NextToken internally.
+
+You don't need to write:
+next_token = ...
+
+or:
+
+while True:
+
+
+4. Limiting the total number of items:
+
+Boto3 also supports:
+
+PaginationConfig={
+    "MaxItems": 20
+}
+
+Example:
+
+pages = paginator.paginate(
+    Filters=[
+        {
+            "Name": "tag:Env",
+            "Values": ["Production"]
+        }
+    ],
+    PaginationConfig={
+        "MaxItems": 20
+    }
+)
+
+Difference:
+
+Setting	Meaning
+PageSize	How large each page should be
+MaxItems	Maximum number of items you want overall
+
+For example:
+
+PageSize = 10
+MaxItems = 25
+
+Page 1 → 10
+Page 2 → 10
+Page 3 → 5
+       → STOP
+
+
+Why pagination matters in real AWS automation?
+
+Imagine you have:
+
+10 EC2 instances
+
+Your simple code may appear to work perfectly.
+
+But later your organization has:
+
+500 EC2 instances
+
+or:
+
+5,000 S3 objects
+
+or:
+
+10,000 DynamoDB items
+
+AWS APIs commonly paginate large result sets.
+
+Without properly handling pagination, your automation can process only the first portion of the results.
+
+That's why production Boto3 code commonly looks like:
+
+paginator = client.get_paginator("some_operation")
+
+for page in paginator.paginate(...):
+    process(page)
