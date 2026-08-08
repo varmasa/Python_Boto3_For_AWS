@@ -1,0 +1,28 @@
+Error handling
+
+Production Boto3 code must handle AWS exceptions.
+
+
+import boto3
+from botocore.exceptions import ClientError
+s3 = boto3.client("s3")
+try:
+    response = s3.get_object(
+        Bucket="my-bucket",
+        Key="missing.txt"
+    )
+except ClientError as e:
+    print(e)
+
+
+You can inspect the AWS error:
+except ClientError as e:
+    error_code = e.response["Error"]["Code"]
+    print(error_code)
+
+For example:
+
+NoSuchKey
+AccessDenied
+ResourceNotFoundException
+InvalidParameterValue
