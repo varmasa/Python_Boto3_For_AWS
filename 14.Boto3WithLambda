@@ -1,0 +1,28 @@
+Lambda with Boto3:
+Boto3 becomes particularly powerful inside Lambda.
+
+Example Lambda:
+
+import boto3
+s3 = boto3.client("s3")
+def lambda_handler(event, context):
+    response = s3.list_buckets()
+    buckets = [
+        bucket["Name"]
+        for bucket in response["Buckets"]
+    ]
+    return {
+        "buckets": buckets
+    }
+
+The important architecture is:
+Lambda
+  ↓
+IAM execution role
+  ↓
+Boto3
+  ↓
+AWS service
+
+Notice that you don't normally put AWS credentials inside Lambda.
+The Lambda execution role supplies the permissions.
