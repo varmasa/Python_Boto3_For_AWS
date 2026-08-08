@@ -1,0 +1,24 @@
+Boto3 is the AWS SDK(Software Development Kit) for Python.
+It lets Python programs interact with AWS services programmatically.
+
+For example, instead of manually creating an S3 bucket in the AWS Console:
+
+import boto3
+s3 = boto3.client("s3")
+s3.create_bucket(
+    Bucket="my-demo-bucket-12345"
+)
+
+
+Your Python code sends an API request to AWS.
+Think of the flow as:
+
+Python program
+     ↓
+    Boto3
+     ↓
+AWS API
+     ↓
+AWS Service
+     ↓
+S3 / EC2 / DynamoDB / Lambda / IAM / SQS / etc.
