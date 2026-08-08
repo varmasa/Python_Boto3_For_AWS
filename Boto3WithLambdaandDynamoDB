@@ -1,0 +1,28 @@
+DynamoDB:
+
+Boto3 is heavily used with DynamoDB.
+
+Low-level client:
+dynamodb = boto3.client("dynamodb")
+
+Put an item:
+
+import boto3
+dynamodb = boto3.client("dynamodb")
+def lambda_handler(event, context):
+    response = dynamodb.put_item(
+        TableName="DataInsert",
+        Item={
+            "UserId": {
+                "S": "1002"
+            },
+            "Name": {
+                "S": "Bob"
+            }
+        }
+    )
+    print(response)
+    return {
+        "statusCode": 200,
+        "body": "Item inserted successfully"
+    }
