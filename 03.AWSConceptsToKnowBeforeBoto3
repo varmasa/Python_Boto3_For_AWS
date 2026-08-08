@@ -1,0 +1,35 @@
+Before going deep into Boto3, understand these AWS concepts:
+
+
+AWS Account
+   │
+   ├── Region
+   │     ├── AZ
+   │     └── AWS Services
+   │
+   └── IAM
+         ├── User
+         ├── Role
+         └── Policy
+
+
+Services:
+| Service         | Purpose              |
+| --------------- | -------------------- |
+| S3              | Object storage       |
+| EC2             | Virtual machines     |
+| IAM             | Identity/access      |
+| Lambda          | Serverless functions |
+| DynamoDB        | NoSQL database       |
+| RDS             | Relational database  |
+| VPC             | Networking           |
+| CloudWatch      | Monitoring/logs      |
+| SQS             | Message queue        |
+| SNS             | Notifications        |
+| ECR             | Container images     |
+| ECS             | Containers           |
+| Secrets Manager | Secrets              |
+| Systems Manager | Server management    |
+
+
+Boto3 is essentially your Python interface to these services.
