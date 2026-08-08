@@ -1,0 +1,21 @@
+The most important Boto3 concept: Client
+
+You'll use clients constantly.
+
+import boto3
+s3 = boto3.client("s3")
+ec2 = boto3.client("ec2")
+iam = boto3.client("iam")
+sqs = boto3.client("sqs")
+lambda_client = boto3.client("lambda")
+
+
+syntax:  
+  client = boto3.client("aws-service-name")
+
+ex:
+  s3 = boto3.client("s3")
+  ec2 = boto3.client("ec2")
+  dynamodb = boto3.client("dynamodb")
+  cloudwatch = boto3.client("cloudwatch")
+
