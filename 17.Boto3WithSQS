@@ -30,3 +30,16 @@ FIFO Queue
     └── MessageDeduplicationId
             ↓
         Is this a duplicate?
+
+
+Real-world Scenario:
+
+Application
+    ↓
+SQS
+    ↓
+Lambda / worker
+    ↓
+Boto3
+    ↓
+Database / S3 / another service
