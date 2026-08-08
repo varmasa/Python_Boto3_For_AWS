@@ -16,3 +16,17 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "body": "Message sent successfully"
     }
+
+
+What are these two parameters?
+For a FIFO queue, think of them like this:
+
+FIFO Queue
+    │
+    ├── MessageGroupId
+    │       ↓
+    │   Which group/order?
+    │
+    └── MessageDeduplicationId
+            ↓
+        Is this a duplicate?
