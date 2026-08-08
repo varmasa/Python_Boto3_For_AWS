@@ -1,0 +1,27 @@
+//List Buckets
+
+import boto3
+
+s3 = boto3.client("s3")
+
+response = s3.list_buckets()
+
+for bucket in response["Buckets"]:
+    print(bucket["Name"])                      //List buckets
+
+s3.upload_file(
+    "report.csv",
+    "sai-876163988748-ap-south-1-an",
+    "reports/report.csv"                       //Upload
+)
+
+s3.download_file(
+    "sai-876163988748-ap-south-1-an",
+    "reports/report.csv",
+    "downloaded_report.csv"                    //Download
+)
+
+s3.delete_object(
+    Bucket="sai-876163988748-ap-south-1-an",
+    Key="reports/report.csv"                   //Delete
+)
